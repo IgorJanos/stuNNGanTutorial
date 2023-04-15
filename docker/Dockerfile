@@ -15,4 +15,4 @@ WORKDIR /setup
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
-WORKDIR /workspace/stunngantutorial
+WORKDIR /workspace/stuNNGanTutorial
