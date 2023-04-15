@@ -40,7 +40,7 @@ if (__name__ == "__main__"):
     p.add_argument("--outfolder", "-o", default=".scratch/runs", type=str, help="Output folder for training runs")
 
     # Basic GAN settings
-    p.add_argument("--loss", "-l", default="hinge", type=str, help="Loss function to use for training")
+    p.add_argument("--loss", "-l", default="gan", type=str, help="Loss function to use for training")
     p.add_argument("--dataset", "-d", default="mnist", type=str, help="Dataset")
     p.add_argument("--batch_size", "-b", default=32, type=int, help="Batch size")        
     p.add_argument("--iters", "-it", default=1000*1000, type=int, help="Number of training iterations")

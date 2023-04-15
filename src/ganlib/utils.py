@@ -74,7 +74,7 @@ class TrainingStats:
 def to_image(x):    
     y = x.cpu().detach().numpy()
     y = np.clip(y, -0.5, 0.5)
-    y = (0.5*y + 0.5) * 255.0
+    y = (y + 0.5) * 255.0
     y = y.astype(np.uint8)
     return y
 
