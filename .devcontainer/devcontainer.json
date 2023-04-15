@@ -1,0 +1,45 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.234.0/containers/docker-existing-dockerfile
+{
+	"name": "Existing Dockerfile",
+
+	// Sets the run context to one level up instead of the .devcontainer folder.
+	"context": "..",
+
+	// Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
+	"dockerFile": "../docker/Dockerfile",
+
+	// Set *default* container specific settings.json values on container create.
+	"settings": { },
+	
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
+		"wayou.vscode-icons-mac", "ms-toolsai.jupyter", "ms-python.python", "GitLab.gitlab-workflow"
+	],
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Uncomment when using a ptrace-based debugger like C++, Go, and Rust
+	"runArgs": [ 
+		"--gpus", "all", "--privileged",
+		"--network=bridge",
+		"--shm-size", "8g",
+		"-e", "CUDA_VISIBLE_DEVICES=0",
+
+		// Volumes
+		"-v", "${localEnv:HOME}/.netrc:/root/.netrc",
+		"-v", "/mnt/scratch/${localEnv:USER}/${localWorkspaceFolderBasename}:/workspace/${localWorkspaceFolderBasename}/.scratch"		
+	],
+
+	"mounts": [ 
+        // Git & Other credentials
+		"source=${localEnv:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,readonly"
+	],
+
+	// Uncomment to use the Docker CLI from inside the container. See https://aka.ms/vscode-remote/samples/docker-from-docker.
+	// "mounts": [ "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind" ]
+
+	"workspaceMount": "source=${localWorkspaceFolder},target=/workspace/${localWorkspaceFolderBasename},type=bind",
+	"workspaceFolder": "/workspace/${localWorkspaceFolderBasename}"
+}
