@@ -1,0 +1,2 @@
+# stuNNGanTutorial
+Simple GAN implementation
