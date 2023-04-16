@@ -16,7 +16,7 @@ echo "User: ${USER_NAME}"
 
 docker run \
     -it --rm \
-    --name "cookie-gan-${DEVICE}" \
+    --name "stunngan-${DEVICE}" \
     --gpus all \
     --privileged \
     --shm-size 8g \
