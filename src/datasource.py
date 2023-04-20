@@ -17,7 +17,7 @@ def _get_root_dir(name):
 def get_transform():
     return tvf.Compose([
         tvf.ToTensor(),
-        tvf.Normalize(mean=0.5, std=1)        # <0;1> -> <-1;-1>
+        tvf.Normalize(mean=0.5, std=1)        # <0;1> -> <-0.5;0.5>
     ])
 
 
