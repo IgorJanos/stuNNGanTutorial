@@ -50,12 +50,10 @@ WORLD_SIZE=2
 LOCAL_RANK=0
 RANK=$3
 
-USER_ID=$(id -u)
-
 
 docker run \
     -it --rm \
-    --user ${USER_ID}:${USER_ID} \
+    --user $(id -u):$(id -g) \
     --name "${IMAGE_NAME}" \
     --hostname "${IMAGE_NAME}" \
     --network ${NETWORK_NAME} \
