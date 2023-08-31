@@ -95,7 +95,6 @@ class Trainer:
 
         # Sample random noise, and generate fake images
         z = torch.randn(size=(x.size(0), self.args.zdim))
-        #z = self.fabric.to_device(z)
         x_fake = gen(z)
 
         #----------------------------------------------------------------------
