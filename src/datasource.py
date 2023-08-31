@@ -73,11 +73,10 @@ class DataSource:
             shuffle=True
         )
 
-        self.iterLoader = iter(self.loader)
-
-    def setup(self):
         # With fabric
         self.loader = self.fabric.setup_dataloaders(self.loader)
+
+        self.iterLoader = iter(self.loader)
 
     def get(self):
         try:

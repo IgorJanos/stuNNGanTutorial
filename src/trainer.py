@@ -65,7 +65,6 @@ class Trainer:
             Setup our loggers
         '''
         self.log = Loggers(loggers)
-        self.ds.setup()
 
 
     def train(self):

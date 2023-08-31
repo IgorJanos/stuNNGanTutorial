@@ -36,8 +36,10 @@ echo ""
 LOCAL_HOST_NAME=$(hostname)
 
 # These are necessary to make the connection
-IMAGE_NAME=stunngan-${LOCAL_HOST_NAME}-${DEVICE}
-MASTER_ADDR=stunngan-${MASTER_HOST_NAME}-0
+DEVICE_NAME=`echo ${DEVICE} | tr "," "-"`
+
+IMAGE_NAME=stunngan-${LOCAL_HOST_NAME}-${DEVICE_NAME}
+MASTER_ADDR=stunngan-${MASTER_HOST_NAME}
 MASTER_PORT=24000
 
 # Configured by the Swarm !
@@ -65,6 +67,7 @@ docker run \
     -e MASTER_ADDR=${MASTER_ADDR} \
     -e MASTER_PORT=${MASTER_PORT} \
     -e WORLD_SIZE=${WORLD_SIZE} \
-    -e RANK=${RANK} \
+    -e NODE_RANK=${RANK} \
     -e NCCL_SOCKET_IFNAME=${DDP_INTERFACE} \
+    -e NCCL_ASYNC_ERROR_HANDLING=1 \
     ${IMAGE_TAG} 
