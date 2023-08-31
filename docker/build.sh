@@ -3,6 +3,10 @@
 # Fail on error and unset variables.
 set -eu -o pipefail
 
+echo "Building as rootful docker!"
+unset DOCKER_HOST
+
+
 CWD=$(readlink -e "$(dirname "$0")")
 cd "${CWD}/.." || exit $?
 source ./docker/common.sh

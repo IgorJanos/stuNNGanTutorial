@@ -61,8 +61,8 @@ DATASETS = {
 
 
 class DataSource:
-    def __init__(self, args, device):
-        self.device = device
+    def __init__(self, args, fabric):
+        self.fabric = fabric
 
         # Create dataset & data loader
         self.ds, self.shape = DATASETS[args.dataset]()
@@ -72,8 +72,12 @@ class DataSource:
             num_workers=2,
             shuffle=True
         )
+
         self.iterLoader = iter(self.loader)
 
+    def setup(self):
+        # With fabric
+        self.loader = self.fabric.setup_dataloaders(self.loader)
 
     def get(self):
         try:
@@ -83,7 +87,7 @@ class DataSource:
             self.iterLoader = iter(self.loader)
             x, labels = next(self.iterLoader)
 
-        return x.to(self.device)
+        return x
     
 
 

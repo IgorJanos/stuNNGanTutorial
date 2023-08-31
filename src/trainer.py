@@ -11,21 +11,19 @@ from losses import create_loss
 
 
 class Trainer:
-    def __init__(self, args):       
+    def __init__(self, args, fabric):       
         self.args = args
+        self.fabric = fabric
 
         # Initialize experiment
         self.name, self.out_folder = initialize_experiment(args)
         self.stats = TrainingStats(decay=0.995)
 
-        # CUDA / CPU
-        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
         # Get our data source
-        self.ds = DataSource(args, self.device)
+        self.ds = DataSource(args, fabric)
 
         # Models & optimizers
-        self.models = create_models(args, self.ds.shape, self.device)
+        self.models = create_models(args, self.ds.shape)
         self.opts = self.create_optimizers(self.models, args)
 
         # Training loss !
@@ -54,6 +52,11 @@ class Trainer:
                             betas=(0.5, 0.999)
                         )
         }
+
+        # Setup with fabric
+        models["gen"], result["opt_g"] = self.fabric.setup(models["gen"], result["opt_g"])
+        models["dis"], result["opt_d"] = self.fabric.setup(models["dis"], result["opt_d"])
+
         return result
 
 
@@ -62,6 +65,7 @@ class Trainer:
             Setup our loggers
         '''
         self.log = Loggers(loggers)
+        self.ds.setup()
 
 
     def train(self):
@@ -90,7 +94,8 @@ class Trainer:
         x = self.ds.get()
 
         # Sample random noise, and generate fake images
-        z = torch.randn(size=(x.size(0), self.args.zdim)).to(self.device)
+        z = torch.randn(size=(x.size(0), self.args.zdim))
+        #z = self.fabric.to_device(z)
         x_fake = gen(z)
 
         #----------------------------------------------------------------------
@@ -101,7 +106,7 @@ class Trainer:
         score_fake = dis(x_fake)
         loss_gen = L.G(score_fake)
         lG = loss_gen.cpu().detach().item()
-        loss_gen.backward()
+        self.fabric.backward(loss_gen)
 
         og.step()
 
@@ -119,7 +124,7 @@ class Trainer:
         if (self.args.loss == "wgan-gp"):
             loss_dis += 10.0 * L.gradient_penalty(dis, x, x_fake)
 
-        loss_dis.backward()
+        self.fabric.backward(loss_dis)
         od.step()
 
 

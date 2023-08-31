@@ -6,7 +6,7 @@ RUN apt-get update --fix-missing
 RUN apt-get install apt-transport-https
 RUN apt-get install ca-certificates
 RUN update-ca-certificates
-
+RUN apt-get install -y inetutils-ping
 
 # Install required packages
 WORKDIR /setup

@@ -88,7 +88,7 @@ class Dis_MLP(nn.Module):
 
 
 
-def create_models(args, shape, device):
+def create_models(args, shape):
 
     use_sn = False
 
@@ -106,10 +106,9 @@ def create_models(args, shape, device):
     # Move the models to the GPU and print their stats
     for k,v in result.items():
         v.train()
-        result[k] = v.to(device)
 
-        print("Summary for: ", k)
-        summary(result[k], input_size=result[k].in_shape)
-        print("")
+        #print("Summary for: ", k)
+        #summary(result[k], input_size=result[k].in_shape)
+        #print("")
 
     return result
