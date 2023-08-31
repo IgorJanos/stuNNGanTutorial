@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM vggfiit/vgg-torch:latest
+FROM vggfiit/vgg-torch:2.0.0
 
 # Update the APT-GET
 RUN apt-get update --fix-missing
@@ -7,8 +7,6 @@ RUN apt-get install apt-transport-https
 RUN apt-get install ca-certificates
 RUN update-ca-certificates
 
-
-USER root
 
 # Install required packages
 WORKDIR /setup
